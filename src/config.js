@@ -5,7 +5,7 @@ window.onload = function () {
         type: Phaser.AUTO,
         width: 960,
         height: 540,
-        backgroundColor: "#ffffff",
+        backgroundColor: "#C6F4F0",
         scene: [boodtGame, startGame, menu, level1, level2, level3]
     }
     game = new Phaser.Game(config);

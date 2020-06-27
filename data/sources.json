@@ -28,8 +28,8 @@
             },
             {
                 "type": "image",
-                "key": "originpicture",
-                "url": "assets/img/originpicture.png"
+                "key": "frame",
+                "url": "assets/img/frame.png"
             },
             {
                 "type": "image",
@@ -40,15 +40,56 @@
                 "type": "image",
                 "key": "settingbtn",
                 "url": "assets/img/settingbtn.png"
-            }
-        ]
-    },
-    "sound": {
-        "file": [
+            },
             {
-                "type": "sound",
+                "type": "image",
+                "key": "backbtn_right",
+                "url": "assets/img/backbutton_right.png"
+            },
+            {
+                "type": "image",
+                "key": "pausebtn",
+                "url": "assets/img/pausebtn.png"
+            },
+            {
+                "type": "image",
+                "key": "playbtn",
+                "url": "assets/img/playbtn.png"
+            },
+            {
+                "type": "image",
+                "key": "settingbtn_right",
+                "url": "assets/img/settingbtn_right.png"
+            },
+            {
+                "type": "image",
+                "key": "helpbtn",
+                "url": "assets/img/helpbtn.png"
+            },
+            {
+                "type": "image",
+                "key": "originpicture",
+                "url": "assets/img/originpicture.png"
+            },
+            {
+                "type": "image",
+                "key": "musicon",
+                "url": "assets/img/musicon.png"
+            },
+            {
+                "type": "image",
+                "key": "musicoff",
+                "url": "assets/img/musicoff.png"
+            },
+            {
+                "type": "audio",
                 "key": "soundtrack",
-                "url": "assets/sound/soundtrack.wav"
+                "url": "assets/audio/soundtrack.wav"
+            },
+            {
+                "type": "audio",
+                "key": "clicksound",
+                "url": "assets/audio/clicksound.wav"
             }
         ]
     }
