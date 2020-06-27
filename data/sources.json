@@ -1,0 +1,55 @@
+{ 
+    "img": {
+        "files": [
+            {
+                "type": "image",
+                "key": "background",
+                "url": "assets/img/background1.png"
+            },
+            {
+                "type": "image",
+                "key": "playbutton",
+                "url": "assets/img/smallplaybutton.png"
+            },
+            {
+                "type": "image",
+                "key": "back_scene1",
+                "url": "assets/img/menu.png"
+            },
+            {
+                "type": "image",
+                "key": "level",
+                "url": "assets/img/roundplaybtn.png"
+            },
+            {
+                "type": "image",
+                "key": "level_right",
+                "url": "assets/img/roundplaybtn_right.png"
+            },
+            {
+                "type": "image",
+                "key": "originpicture",
+                "url": "assets/img/originpicture.png"
+            },
+            {
+                "type": "image",
+                "key": "backbtn",
+                "url": "assets/img/backbutton.png"
+            },
+            {
+                "type": "image",
+                "key": "settingbtn",
+                "url": "assets/img/settingbtn.png"
+            }
+        ]
+    },
+    "sound": {
+        "file": [
+            {
+                "type": "sound",
+                "key": "soundtrack",
+                "url": "assets/sound/soundtrack.wav"
+            }
+        ]
+    }
+}
