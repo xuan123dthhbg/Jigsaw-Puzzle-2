@@ -82,6 +82,11 @@
                 "url": "assets/img/musicoff.png"
             },
             {
+                "type": "image",
+                "key": "basicpicture",
+                "url": "assets/img/basicpicture.png"
+            },
+            {
                 "type": "audio",
                 "key": "soundtrack",
                 "url": "assets/audio/soundtrack.wav"

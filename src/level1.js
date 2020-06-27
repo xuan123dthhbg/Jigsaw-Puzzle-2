@@ -9,28 +9,31 @@ class level1 extends Phaser.Scene {
     create() {
         var frame = this.add.image(0,0, "frame");
         frame.setOrigin(0);
-        var settingbtn = this.add.image(750, 200, "settingbtn");
+        var basicpicture = this.add.image(game.config.width/2 -260, game.config.height/2 - 150,"basicpicture");
+        basicpicture.setOrigin(0);
+
+        var settingbtn = this.add.image(755, 200, "settingbtn");
         settingbtn.setInteractive({useHandCursor:true}).on('pointerdown', function(){
             this.sound.play("clicksound", {loop: false});
-            var playbtn = this.add.image(750, 200, "settingbtn_right")
+            var playbtn = this.add.image(755, 200, "settingbtn_right")
         }, this)
-        var pausebtn = this.add.image(750, 260, "pausebtn")
+        var pausebtn = this.add.image(755, 260, "pausebtn")
         pausebtn.setInteractive({useHandCursor:true}).on('pointerdown', function(){
             this.sound.play("clicksound", {loop: false});
-            var playbtn = this.add.image(750, 260, "playbtn")
+            var playbtn = this.add.image(755, 260, "playbtn")
             playbtn.setInteractive({useHandCursor:true}).on('pointerdown', function(){
                 this.sound.play("clicksound", {loop: false});
                 playbtn.destroy();
                 playbtn = null;
             }, this)
         }, this)
-        var backbtn = this.add.image(750, 140, "backbtn");
+        var backbtn = this.add.image(755, 140, "backbtn");
         backbtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
             this.sound.play("clicksound", {loop: false});
-            this.add.image(750, 140, "backbtn_right");
+            this.add.image(755, 140, "backbtn_right");
             setTimeout(() => this.scene.start("menu"), 100)
         },this);
-        var helpbtn = this.add.image(750, 320, "helpbtn");
+        var helpbtn = this.add.image(755, 320, "helpbtn");
 
         var haveImg = false;
         helpbtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
@@ -46,13 +49,14 @@ class level1 extends Phaser.Scene {
             } 
         },this);
 
-        var musiconbtn = this.add.image(750, 380, "musicon");
+        var musiconbtn = this.add.image(755, 380, "musicon");
         var haveMusic = true;
         musiconbtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
             if (haveMusic == true){
                 this.sound.play("clicksound", {loop: false});
-                setTimeout(() => this.musicoffbtn = this.add.image(750, 380, "musicoff"), 100);
+                setTimeout(() => this.musicoffbtn = this.add.image(755, 380, "musicoff"), 100);
                 haveMusic = false;
+                this.sound.stop("clicksound");
             } else {
                 this.sound.play("clicksound", {loop: false});
                 this.musicoffbtn.destroy();
