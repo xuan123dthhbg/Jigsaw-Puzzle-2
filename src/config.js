@@ -6,7 +6,7 @@ window.onload = function () {
         width: 960,
         height: 540,
         backgroundColor: "#C6F4F0",
-        scene: [boodtGame, startGame, menu, level1, level2, level3]
+        scene: [boodtGame, startGame, menu, level1, level2, level3, main]
     }
     game = new Phaser.Game(config);
     window.focus();

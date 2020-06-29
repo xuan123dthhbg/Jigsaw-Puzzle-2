@@ -87,6 +87,16 @@
                 "url": "assets/img/basicpicture.png"
             },
             {
+                "type": "image",
+                "key": "framepicture",
+                "url": "assets/img/framepicture.png"
+            },
+            {
+                "type": "image",
+                "key": "framepiece",
+                "url": "assets/img/framepiece.png"
+            },
+            {
                 "type": "audio",
                 "key": "soundtrack",
                 "url": "assets/audio/soundtrack.wav"
