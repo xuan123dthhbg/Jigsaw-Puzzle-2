@@ -141,8 +141,12 @@ class main extends Phaser.Scene {
                 gameObject.y = dropZone.y;
                 gameObject.input.enabled = false;
                 
+            } else {
+                gameObject.x = gameObject.input.dragStartX;
+                gameObject.y = gameObject.input.dragStartY;
+
+                gameObject.setScale(0.5);
             }
-            console.log(dropZone.name, gameObject.name);
             
         });
     }
