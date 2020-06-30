@@ -51,14 +51,16 @@ class main extends Phaser.Scene {
                 sceneName.sound.play("clicksound", {loop: false});
                 setTimeout(() => sceneName.musicoffbtn = sceneName.add.image(755, 380, "musicoff"), 100);
                 haveMusic = false;
-                sceneName.sound.stop("clicksound");
+                
             } else {
                 sceneName.sound.play("clicksound", {loop: false});
                 sceneName.musicoffbtn.destroy();
                 sceneName.musicoffbtn = null;
                 haveMusic = true;
+
             }
         },sceneName);
+
     }
     loadImg(sceneName){
         var frame = sceneName.add.image(0,0, "frame");
@@ -78,14 +80,30 @@ class main extends Phaser.Scene {
         var index_img=[];
         for(var i=1; i<=num; i++){
             index_img[i-1]=i;
-        }
+        } 
         index_img=this.shuffle(index_img);
-        for(let i=0; i<4; i++){
-            sceneName.add.image(location[i][0],location[i][1],atlas,index_img[i]).setScale(x);
-        }
         
-        
-    }
+            var pic1 = sceneName.add.image(location[0][0],location[0][1],atlas,index_img[0]).setScale(x);
+            var pic2 = sceneName.add.image(location[1][0],location[1][1],atlas,index_img[1]).setScale(x);
+            var pic3 = sceneName.add.image(location[2][0],location[2][1],atlas,index_img[2]).setScale(x);
+            var pic4 = sceneName.add.image(location[3][0],location[3][1],atlas,index_img[3]).setScale(x);
+
+            pic1.setName('1');
+            pic2.setName('2');
+            pic3.setName('3');
+            pic4.setName('4');
+
+            this.piecesDrag(sceneName, pic1);
+            this.piecesDrag(sceneName, pic2);
+            this.piecesDrag(sceneName, pic3);
+            this.piecesDrag(sceneName, pic4);
+
+            this.piecesDrop(sceneName, 0, 0, '1');
+            this.piecesDrop(sceneName, 180, 126, '4');
+            this.piecesDrop(sceneName, 180, 0, '2');
+            this.piecesDrop(sceneName, 0, 126, '3');
+    }   
+
     shuffle(array) {
         var currentIndex = array.length, temporaryValue, randomIndex;
         while (0 !== currentIndex) {
@@ -97,4 +115,36 @@ class main extends Phaser.Scene {
         }
         return array;
       }
+
+    piecesDrag(sceneName, image){
+        image.setInteractive();
+        sceneName.input.setDraggable(image);
+        image.on('dragstart', function (pointer, gameObject) {
+            image.setScale(1);
+        });
+        sceneName.input.on('dragstart', function (pointer, gameObject) {
+            sceneName.children.bringToTop(gameObject);
+        }, sceneName);
+
+        sceneName.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+        });
+    }
+
+    piecesDrop (sceneName, x, y, name){
+        var zone = sceneName.add.zone(348 + x, 143 + y, 180, 126).setRectangleDropZone(180,126).setInteractive();
+        zone.setName(name);
+        sceneName.input.on('drop', function (pointer, gameObject, dropZone) {
+            if (dropZone.name === gameObject.name) {
+                gameObject.x = dropZone.x;
+                gameObject.y = dropZone.y;
+                gameObject.input.enabled = false;
+                
+            }
+            console.log(dropZone.name, gameObject.name);
+            
+        });
+    }
+    
 }
