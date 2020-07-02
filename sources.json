@@ -1,0 +1,111 @@
+{ 
+    "img": {
+        "files": [
+            {
+                "type": "image",
+                "key": "background",
+                "url": "assets/img/background1.png"
+            },
+            {
+                "type": "image",
+                "key": "playbutton",
+                "url": "assets/img/smallplaybutton.png"
+            },
+            {
+                "type": "image",
+                "key": "back_scene1",
+                "url": "assets/img/menu.png"
+            },
+            {
+                "type": "image",
+                "key": "level",
+                "url": "assets/img/roundplaybtn.png"
+            },
+            {
+                "type": "image",
+                "key": "level_right",
+                "url": "assets/img/roundplaybtn_right.png"
+            },
+            {
+                "type": "image",
+                "key": "frame",
+                "url": "assets/img/frame.png"
+            },
+            {
+                "type": "image",
+                "key": "backbtn",
+                "url": "assets/img/backbutton.png"
+            },
+            {
+                "type": "image",
+                "key": "settingbtn",
+                "url": "assets/img/settingbtn.png"
+            },
+            {
+                "type": "image",
+                "key": "backbtn_right",
+                "url": "assets/img/backbutton_right.png"
+            },
+            {
+                "type": "image",
+                "key": "pausebtn",
+                "url": "assets/img/pausebtn.png"
+            },
+            {
+                "type": "image",
+                "key": "playbtn",
+                "url": "assets/img/playbtn.png"
+            },
+            {
+                "type": "image",
+                "key": "settingbtn_right",
+                "url": "assets/img/settingbtn_right.png"
+            },
+            {
+                "type": "image",
+                "key": "helpbtn",
+                "url": "assets/img/helpbtn.png"
+            },
+            {
+                "type": "image",
+                "key": "originpicture",
+                "url": "assets/img/originpicture.png"
+            },
+            {
+                "type": "image",
+                "key": "musicon",
+                "url": "assets/img/musicon.png"
+            },
+            {
+                "type": "image",
+                "key": "musicoff",
+                "url": "assets/img/musicoff.png"
+            },
+            {
+                "type": "image",
+                "key": "basicpicture",
+                "url": "assets/img/basicpicture.png"
+            },
+            {
+                "type": "image",
+                "key": "framepicture",
+                "url": "assets/img/framepicture.png"
+            },
+            {
+                "type": "image",
+                "key": "framepiece",
+                "url": "assets/img/framepiece.png"
+            },
+            {
+                "type": "audio",
+                "key": "soundtrack",
+                "url": "assets/audio/soundtrack.wav"
+            },
+            {
+                "type": "audio",
+                "key": "clicksound",
+                "url": "assets/audio/clicksound.wav"
+            }
+        ]
+    }
+}
