@@ -10,6 +10,9 @@ class level3 extends Phaser.Scene {
         var main = this.scene.get("main");
         main.loadImg(this)
         main.loadButton(this);
-        main.loadPieces(this,"atlas16", 9, 1)
+        var pieces = main.loadPieces(this,"atlas16", [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], 1)
+        for (let i = 0; i < 4; i++) {
+            main.setDragAndDrop(this,pieces[i] ,1);
+        }
     }
 }
