@@ -3,7 +3,17 @@ class main extends Phaser.Scene {
         super("main");
     }
 
+    init() {
+        this.arrPieces;
+        this.atlasPieces;
+        this.scaleNum;
+        this.numPieces;
+        this.piecesRender;
+    }
+
     loadButton(sceneName) {
+        this.arrPiecesDropped = [];
+        this.piecesRender = [];
         var backbtn = sceneName.add.image(755, 140, "backbtn");
         backbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             sceneName.sound.play("clicksound", {loop: false});
@@ -60,7 +70,6 @@ class main extends Phaser.Scene {
 
             }
         }, sceneName);
-
     }
 
     loadImg(sceneName) {
@@ -72,30 +81,40 @@ class main extends Phaser.Scene {
     }
 
 
-    loadPieces(sceneName, atlas, arr,x) {
-        this.setZone(sceneName,arr.length);
-        var ax=x*360/(2*(Math.sqrt(arr.length)));
-        var ay=x*252/(2*(Math.sqrt(arr.length)));
+    loadPieces(sceneName, atlas, arr, x, shuffle, numZone) {
+        let count = 4;
+        this.piecesRender = [];
+        this.atlasPieces = atlas;
+        this.scaleNum = x;
+        this.numPieces = numZone;
+        this.setZone(sceneName, numZone);
+        var ax = x * 360 / (2 * (Math.sqrt(numZone)));
+        var ay = x * 252 / (2 * (Math.sqrt(numZone)));
         var location = [[game.config.width / 2 - 360 / 2 - 73, game.config.height / 2 - 252 / 2 - 3],
             [game.config.width / 2 - 360 / 2 - 73, game.config.height / 2 - 252 / 2 - 3 + 65],
             [game.config.width / 2 - 360 / 2 - 73, game.config.height / 2 - 252 / 2 - 3 + 129],
             [game.config.width / 2 - 360 / 2 - 73, game.config.height / 2 - 252 / 2 - 3 + 193]
         ]
-        arr = this.shuffle(arr);
-
-        var pic1 = sceneName.add.image(location[0][0]+ax, location[0][1]+ay, atlas, arr[0]).setScale(x);
-        var pic2 = sceneName.add.image(location[1][0]+ax, location[1][1]+ay, atlas, arr[1]).setScale(x);
-        var pic3 = sceneName.add.image(location[2][0]+ax, location[2][1]+ay, atlas, arr[2]).setScale(x);
-        var pic4 = sceneName.add.image(location[3][0]+ax, location[3][1]+ay, atlas, arr[3]).setScale(x);
-        pic1.setName(arr[0]);
-        pic2.setName(arr[1]);
-        pic3.setName(arr[2]);
-        pic4.setName(arr[3]);
-        return [pic1,pic2,pic3,pic4];
+        if (shuffle == 1) {
+            arr = this.shuffle(arr);
+        }
+        this.arrPieces = arr;
+        if (arr.length >= 4) {
+            count = 4;
+        } else {
+            count = arr.length;
+        }
+        for (let i = 0; i < count; i++) {
+            let pic = sceneName.add.image(location[i][0] + ax, location[i][1] + ay, atlas, arr[i]).setScale(x);
+            pic.setName(arr[i]);
+            this.piecesRender.push(pic);
+        }
+        return this.piecesRender;
 
     }
-    setDragAndDrop(sceneName,picture,scaleNum){
-        this.piecesDrag(sceneName, picture,scaleNum);
+
+    setDragAndDrop(sceneName, picture, scaleNum) {
+        this.piecesDrag(sceneName, picture, scaleNum);
         this.piecesDrop(sceneName, scaleNum);
     }
 
@@ -111,7 +130,7 @@ class main extends Phaser.Scene {
         return array;
     }
 
-    piecesDrag(sceneName, image,scaleNum) {
+    piecesDrag(sceneName, image, scaleNum) {
         image.setInteractive();
         sceneName.input.setDraggable(image);
         image.on('dragstart', function (pointer, gameObject) {
@@ -121,7 +140,7 @@ class main extends Phaser.Scene {
             sceneName.children.bringToTop(gameObject);
         }, sceneName);
 
-        sceneName.input.on('drag', function (pointer, gameObject, dragX, dragY,dropZone) {
+        sceneName.input.on('drag', function (pointer, gameObject, dragX, dragY, dropZone) {
             gameObject.x = pointer.x;
             gameObject.y = pointer.y;
         });
@@ -134,32 +153,53 @@ class main extends Phaser.Scene {
         });
     }
 
-    piecesDrop(sceneName,scaleNum) {
+    piecesDrop(sceneName, scaleNum) {
         sceneName.input.on('drop', function (pointer, gameObject, dropZone) {
-            console.log(dropZone.name, gameObject.name);
-            if (dropZone.name == gameObject.name) {
+
+            if (dropZone.name == gameObject.name && this.arrPieces.indexOf(gameObject.name) >= 0) {
                 gameObject.x = dropZone.x;
                 gameObject.y = dropZone.y;
                 gameObject.input.enabled = false;
+                if (this.arrPieces.indexOf(gameObject.name) >= 0) {
+                    this.arrPieces.splice(this.arrPieces.indexOf(gameObject.name), 1);
 
-            } else {
+                    this.piecesRender.splice(this.piecesRender.indexOf(gameObject), 1);
+                    for (let i = 0; i < this.piecesRender.length; i++) {
+                        this.piecesRender[i].destroy();
+                    }
+                    let pieces = this.loadPieces(sceneName, this.atlasPieces, this.arrPieces, this.scaleNum, 0, this.numPieces);
+                    for (let i = 0; i < this.piecesRender.length; i++) {
+                        this.setDragAndDrop(sceneName, this.piecesRender[i], this.scaleNum);
+                    }
+                }
+            } else if (this.arrPieces.indexOf(gameObject.name) >= 0) {
                 gameObject.x = gameObject.input.dragStartX;
                 gameObject.y = gameObject.input.dragStartY;
                 gameObject.setScale(scaleNum);
             }
 
-        });
+        }, this);
     }
-    setZone(sceneName,num){
+
+    setZone(sceneName, num) {
         var zone;
-        var ax=360/(Math.sqrt(num));
-        var ay=252/(Math.sqrt(num));
-        for (let i=0;i<Math.sqrt(num);i++){
-            for (let j=0;j<Math.sqrt(num);j++){
-                zone=sceneName.add.zone(348 + i*ax+ax/2, 143 + j*ay+ay/2, ax/2, ay/2).setDropZone();
-                zone.setName(j*Math.sqrt(num)+i+1);
+        var ax = 360 / (Math.sqrt(num));
+        var ay = 252 / (Math.sqrt(num));
+        for (let i = 0; i < Math.sqrt(num); i++) {
+            for (let j = 0; j < Math.sqrt(num); j++) {
+                zone = sceneName.add.zone(348 + i * ax + ax / 2, 143 + j * ay + ay / 2, ax, ay).setDropZone();
+                zone.setName(j * Math.sqrt(num) + i + 1);
+                let graphics = sceneName.add.graphics();
+                graphics.lineStyle(2, 0xffff00);
+                graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+
             }
         }
     }
+
+    checkArr(arr, val) {
+
+    }
+
 
 }
