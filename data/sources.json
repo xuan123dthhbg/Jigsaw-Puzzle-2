@@ -97,6 +97,11 @@
                 "url": "assets/img/framepiece.png"
             },
             {
+                "type": "image",
+                "key": "changepieces",
+                "url": "assets/img/changepieces.png"
+            },
+            {
                 "type": "audio",
                 "key": "soundtrack",
                 "url": "assets/audio/soundtrack.wav"

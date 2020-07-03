@@ -9,9 +9,9 @@ class level1 extends Phaser.Scene {
 
     create() {
         var main = this.scene.get("main");
-        main.loadImg(this)
-        main.loadButton(this);
-        // main.setZone(this,4);
+        main.loadBackground(this);
+        main.loadFrame(this);
+        main.loadButton(this, "atlas4", [1, 2, 3, 4], 0.5, 1,4);
         var pieces = main.loadPieces(this, "atlas4", [1, 2, 3, 4], 0.5, 1,4);
         main.setZone(this, 4);
         for (let i = 0; i < 4; i++) {
