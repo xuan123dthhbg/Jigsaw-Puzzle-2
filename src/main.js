@@ -27,17 +27,22 @@ class main extends Phaser.Scene {
             var playbtn = sceneName.add.image(755, 200, "settingbtn_right")
         }, sceneName)
 
+        var isplaying = true;
         var pausebtn = sceneName.add.image(755, 260, "pausebtn")
         pausebtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
-            sceneName.sound.play("clicksound", {loop: false});
-            var playbtn = sceneName.add.image(755, 260, "playbtn")
-            playbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
+            if (isplaying == true) {
                 sceneName.sound.play("clicksound", {loop: false});
-                playbtn.destroy();
-                playbtn = null;
-            }, sceneName)
-        }, sceneName)
-
+                setTimeout(() => sceneName.playbtn = sceneName.add.image(755, 260, "playbtn"), 100);
+                isplaying = false;
+                sceneName.sound.pauseAll();
+            } else {
+                sceneName.playbtn.destroy();
+                sceneName.playbtn = null;
+                isplaying = true;
+                sceneName.sound.resumeAll();
+            }
+        }, this);
+        
         var helpbtn = sceneName.add.image(755, 320, "helpbtn");
         var haveImg = false;
         helpbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
@@ -63,7 +68,6 @@ class main extends Phaser.Scene {
                 haveMusic = false;
                 sceneName.sound.pauseAll();
             } else {
-                sceneName.sound.play("clicksound", {loop: false});
                 sceneName.musicoffbtn.destroy();
                 sceneName.musicoffbtn = null;
                 haveMusic = true;
@@ -210,10 +214,31 @@ class main extends Phaser.Scene {
             }
         }
     }
-
-    checkArr(arr, val) {
+    countdown(sceneName, initialTime){
+        var text = sceneName.add.text(450, 410, 'Countdown: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);;
         
+        sceneName.time.addEvent({ 
+            delay: 1000, 
+            callback: this.onEvent(text, initialTime), 
+            callbackScope: sceneName, 
+            loop: true});
+            console.log("ok");
     }
 
+    formatTime(seconds){
+        var minutes = Math.floor(seconds/60);
+        // Seconds
+        var partInSeconds = seconds%60;
+        // Adds left zeros to seconds
+        partInSeconds = partInSeconds.toString().padStart(2,'0');
+        // Returns formated time
+        return `${minutes}:${partInSeconds}`;
+    }
+
+    onEvent (text, initialTime){
+    initialTime -= 1; // One second
+    text.setText('Countdown: ' + this.formatTime(initialTime));
+    console.log("ok");
+}
 
 }

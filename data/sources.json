@@ -102,6 +102,11 @@
                 "url": "assets/img/changepieces.png"
             },
             {
+                "type": "image",
+                "key": "nextbtn",
+                "url": "assets/img/nextbutton.png"
+            },
+            {
                 "type": "audio",
                 "key": "soundtrack",
                 "url": "assets/audio/soundtrack.wav"
