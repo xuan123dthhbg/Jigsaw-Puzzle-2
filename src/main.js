@@ -221,17 +221,6 @@ class main extends Phaser.Scene {
         }
     }
 
-    countdown(sceneName, initialTime) {
-        this.textTime = sceneName.add.text(450, 410, 'Countdown: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);
-        this.initialTime = initialTime;
-        sceneName.time.addEvent({
-            delay: 1000,
-            callback: this.onEvent,
-            callbackScope: sceneName,
-            loop: true
-        });
-    }
-
     formatTime(seconds) {
         var minutes = Math.floor(seconds / 60);
         // Seconds
@@ -242,17 +231,16 @@ class main extends Phaser.Scene {
         return `${minutes}:${partInSeconds}`;
     }
 
-    onEvent() {
-        this.initialTime -= 1; // One second
-        this.textTime.setText('Countdown: ' + this.formatTime(this.initialTime));
-    }
     countdown(sceneName, initialTime){
-        sceneName.text = sceneName.add.text(450, 410, 'Countdown: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);
-        sceneName.time.addEvent({
+        sceneName.text = sceneName.add.text(450, 420, 'Countdown: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);
+        sceneName.timedEvent = sceneName.time.addEvent({
             delay: 1000,
             callback:  ()=> {
                 initialTime -= 1; // One second
                 sceneName.text.setText('Countdown: ' + this.formatTime(initialTime));
+                if (initialTime == 0){
+                    sceneName.timedEvent.remove();
+                }
             },
             callbackScope: this,
             loop: true});
