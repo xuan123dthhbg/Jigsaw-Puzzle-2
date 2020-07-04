@@ -9,6 +9,7 @@ class main extends Phaser.Scene {
         this.scaleNum;
         this.numPieces;
         this.piecesRender;
+
     }
 
     loadButton(sceneName, atlas, arr, x, shuffle, numZone) {
@@ -42,7 +43,7 @@ class main extends Phaser.Scene {
                 sceneName.sound.resumeAll();
             }
         }, this);
-        
+
         var helpbtn = sceneName.add.image(755, 320, "helpbtn");
         var haveImg = false;
         helpbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
@@ -50,7 +51,7 @@ class main extends Phaser.Scene {
                 sceneName.sound.play("clicksound", {loop: false});
                 setTimeout(() => sceneName.orginpicture = sceneName.add.image(game.config.width / 2 - 200, game.config.height / 2 - 117.5, "originpicture").setOrigin(0), 100);
                 haveImg = true;
-                
+
             } else {
                 sceneName.sound.play("clicksound", {loop: false});
                 sceneName.orginpicture.destroy();
@@ -75,20 +76,25 @@ class main extends Phaser.Scene {
             }
         }, this);
 
-        var changebtn = sceneName.add.image(game.config.width / 2 - 360 / 2 - 80 + 105/2, game.config.height - 110, "changepieces");
+        var changebtn = sceneName.add.image(game.config.width / 2 - 360 / 2 - 80 + 105 / 2, game.config.height - 110, "changepieces");
         changebtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             sceneName.sound.play("clicksound", {loop: false});
             this.destroyPieces(this.piecesRender);
             this.shuffle(this.piecesRender);
             this.loadPieces(sceneName, atlas, arr, x, shuffle, numZone);
+            for (let i = 0; i < this.piecesRender.length; i++) {
+                this.setDragAndDrop(sceneName, this.piecesRender[i], this.scaleNum);
+            }
         }, this)
     }
-    loadBackground(sceneName){
+
+    loadBackground(sceneName) {
         var frame = sceneName.add.image(0, 0, "frame");
         frame.setOrigin(0);
     }
-    destroyPieces(arr){
-        for (let i=0; i < arr.length; i++){
+
+    destroyPieces(arr) {
+        for (let i = 0; i < arr.length; i++) {
             arr[i].destroy();
         }
     }
@@ -214,31 +220,31 @@ class main extends Phaser.Scene {
             }
         }
     }
-    countdown(sceneName, initialTime){
-        var text = sceneName.add.text(450, 410, 'Countdown: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);;
-        
-        sceneName.time.addEvent({ 
-            delay: 1000, 
-            callback: this.onEvent(text, initialTime), 
-            callbackScope: sceneName, 
-            loop: true});
-            console.log("ok");
+
+    countdown(sceneName, initialTime) {
+        this.textTime = sceneName.add.text(450, 410, 'Countdown: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);
+        this.initialTime = initialTime;
+        sceneName.time.addEvent({
+            delay: 1000,
+            callback: this.onEvent,
+            callbackScope: sceneName,
+            loop: true
+        });
     }
 
-    formatTime(seconds){
-        var minutes = Math.floor(seconds/60);
+    formatTime(seconds) {
+        var minutes = Math.floor(seconds / 60);
         // Seconds
-        var partInSeconds = seconds%60;
+        var partInSeconds = seconds % 60;
         // Adds left zeros to seconds
-        partInSeconds = partInSeconds.toString().padStart(2,'0');
+        partInSeconds = partInSeconds.toString().padStart(2, '0');
         // Returns formated time
         return `${minutes}:${partInSeconds}`;
     }
 
-    onEvent (text, initialTime){
-    initialTime -= 1; // One second
-    text.setText('Countdown: ' + this.formatTime(initialTime));
-    console.log("ok");
-}
+    onEvent() {
+        this.initialTime -= 1; // One second
+        this.textTime.setText('Countdown: ' + this.formatTime(this.initialTime));
+    }
 
 }
