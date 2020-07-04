@@ -22,18 +22,6 @@ class level1 extends Phaser.Scene {
         for (let i = 0; i < 4; i++) {
             main.setDragAndDrop(this, pieces[i], 0.5);
         }
-
-        this.initialTime = 150;
-        this.text = this.add.text(450, 410, 'Countdown: ' + main.formatTime(this.initialTime)).setStroke('#EFAB0C', 8);
-        var timedEvent = this.time.addEvent({
-            delay: 1000,
-            callback:  ()=> {
-                this.initialTime -= 1; // One second
-                this.text.setText('Countdown: ' + main.formatTime(this.initialTime));
-            },
-            callbackScope: this,
-            loop: true});
+        main.countdown(this, 60);
     }
-
-
 }

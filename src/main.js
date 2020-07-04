@@ -246,5 +246,16 @@ class main extends Phaser.Scene {
         this.initialTime -= 1; // One second
         this.textTime.setText('Countdown: ' + this.formatTime(this.initialTime));
     }
+    countdown(sceneName, initialTime){
+        sceneName.text = sceneName.add.text(450, 410, 'Countdown: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);
+        sceneName.time.addEvent({
+            delay: 1000,
+            callback:  ()=> {
+                initialTime -= 1; // One second
+                sceneName.text.setText('Countdown: ' + this.formatTime(initialTime));
+            },
+            callbackScope: this,
+            loop: true});
+    }
 
 }
