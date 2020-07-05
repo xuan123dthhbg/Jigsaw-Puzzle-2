@@ -279,8 +279,12 @@ class main extends Phaser.Scene {
                         var nextbtn = sceneName.add.image(755 - 40, game.config.height - 113, "nextbtn");
                         nextbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
                         sceneName.sound.play("clicksound", {loop: false});
-                        setTimeout(() => this.scene.start('level2'), 100)
-                        }, sceneName)
+                        if (this.numPieces == 4){
+                            setTimeout(() => sceneName.scene.start('level2'), 100)
+                        } else if (this.numPieces == 9){
+                            setTimeout(() => sceneName.scene.start('level3'), 100)
+                        }
+                        }, this)
                         sceneName.tweens.add({
                             targets: nextbtn.setScale(0) ,
                             scaleX: '+=1',

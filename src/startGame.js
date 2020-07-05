@@ -19,7 +19,7 @@ class startGame extends Phaser.Scene {
         this.tweens.add({
             targets: playbutton,
                     props: {
-                        y: {value: 130, duration: 500, ease: 'Bounce.easeOut'}
+                        y: {value: 130, duration: 1500, ease: 'Bounce.easeOut'}
                     },
                     delay: 500
         })
