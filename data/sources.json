@@ -107,6 +107,11 @@
                 "url": "assets/img/nextbutton.png"
             },
             {
+                "type": "image",
+                "key": "welldone",
+                "url": "assets/img/welldone.png"
+            },
+            {
                 "type": "audio",
                 "key": "soundtrack",
                 "url": "assets/audio/soundtrack.wav"
@@ -115,6 +120,16 @@
                 "type": "audio",
                 "key": "clicksound",
                 "url": "assets/audio/clicksound.wav"
+            },
+            {
+                "type": "audio",
+                "key": "winner",
+                "url": "assets/audio/w.wav"
+            },
+            {
+                "type": "audio",
+                "key": "done",
+                "url": "assets/audio/done.wav"
             }
         ]
     }

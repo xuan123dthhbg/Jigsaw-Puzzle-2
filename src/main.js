@@ -9,42 +9,48 @@ class main extends Phaser.Scene {
         this.scaleNum;
         this.numPieces;
         this.piecesRender;
-
+        this.piecesDropped;
+        this.framepicture;
+        this.framepieces;
+        this.timedEvent;
+        this.arrPiecesDropped;
+        this.changebtn;
     }
 
-    loadButton(sceneName, atlas, arr, x, shuffle, numZone) {
+    loadButton(sceneName) {
         this.arrPiecesDropped = [];
         this.piecesRender = [];
-        var backbtn = sceneName.add.image(755, 140, "backbtn");
+        this.piecesDropped = 0;
+        var backbtn = sceneName.add.image(755, 180, "backbtn");
         backbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             sceneName.sound.play("clicksound", {loop: false});
-            sceneName.add.image(755, 140, "backbtn_right");
+            sceneName.add.image(755, 180, "backbtn_right");
             setTimeout(() => sceneName.scene.start("menu"), 100)
         }, sceneName);
 
-        var settingbtn = sceneName.add.image(755, 200, "settingbtn");
-        settingbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
-            sceneName.sound.play("clicksound", {loop: false});
-            var playbtn = sceneName.add.image(755, 200, "settingbtn_right")
-        }, sceneName)
+        // var settingbtn = sceneName.add.image(755, 200, "settingbtn");
+        // settingbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
+        //     sceneName.sound.play("clicksound", {loop: false});
+        //     var playbtn = sceneName.add.image(755, 200, "settingbtn_right")
+        // }, sceneName)
 
-        var isplaying = true;
-        var pausebtn = sceneName.add.image(755, 260, "pausebtn")
-        pausebtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
-            if (isplaying == true) {
-                sceneName.sound.play("clicksound", {loop: false});
-                setTimeout(() => sceneName.playbtn = sceneName.add.image(755, 260, "playbtn"), 100);
-                isplaying = false;
-                sceneName.sound.pauseAll();
-            } else {
-                sceneName.playbtn.destroy();
-                sceneName.playbtn = null;
-                isplaying = true;
-                sceneName.sound.resumeAll();
-            }
-        }, this);
+        // var isplaying = true;
+        // var pausebtn = sceneName.add.image(755, 260, "pausebtn")
+        // pausebtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
+        //     if (isplaying == true) {
+        //         sceneName.sound.play("clicksound", {loop: false});
+        //         setTimeout(() => sceneName.playbtn = sceneName.add.image(755, 260, "playbtn"), 100);
+        //         isplaying = false;
+        //         sceneName.sound.pauseAll();
+        //     } else {
+        //         sceneName.playbtn.destroy();
+        //         sceneName.playbtn = null;
+        //         isplaying = true;
+        //         sceneName.sound.resumeAll();
+        //     }
+        // }, this);
 
-        var helpbtn = sceneName.add.image(755, 320, "helpbtn");
+        var helpbtn = sceneName.add.image(755, 270, "helpbtn");
         var haveImg = false;
         helpbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             if (haveImg == false) {
@@ -60,12 +66,12 @@ class main extends Phaser.Scene {
             }
         }, sceneName);
 
-        var musiconbtn = sceneName.add.image(755, 380, "musicon");
+        var musiconbtn = sceneName.add.image(755, 360, "musicon");
         var haveMusic = true;
         musiconbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             if (haveMusic == true) {
                 sceneName.sound.play("clicksound", {loop: false});
-                setTimeout(() => sceneName.musicoffbtn = sceneName.add.image(755, 380, "musicoff"), 100);
+                setTimeout(() => sceneName.musicoffbtn = sceneName.add.image(755, 360, "musicoff"), 100);
                 haveMusic = false;
                 sceneName.sound.pauseAll();
             } else {
@@ -76,12 +82,12 @@ class main extends Phaser.Scene {
             }
         }, this);
 
-        var changebtn = sceneName.add.image(game.config.width / 2 - 360 / 2 - 80 + 105 / 2, game.config.height - 110, "changepieces");
-        changebtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
+        this.changebtn = sceneName.add.image(game.config.width / 2 - 360 / 2 - 80 + 105 / 2, game.config.height - 110, "changepieces");
+        this.changebtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             sceneName.sound.play("clicksound", {loop: false});
             this.destroyPieces(this.piecesRender);
             this.shuffle(this.piecesRender);
-            this.loadPieces(sceneName, atlas, arr, x, shuffle, numZone);
+            this.loadPieces(sceneName, this.atlasPieces, this.arrPieces, this.scaleNum, 1, this.numPieces);
             for (let i = 0; i < this.piecesRender.length; i++) {
                 this.setDragAndDrop(sceneName, this.piecesRender[i], this.scaleNum);
             }
@@ -100,9 +106,9 @@ class main extends Phaser.Scene {
     }
 
     loadFrame(sceneName) {
-        var framepicture = sceneName.add.image(game.config.width / 2 - 360 / 2 + 40, game.config.height / 2 - 252 / 2 - 10, "framepicture");
-        framepicture.setOrigin(0);
-        var framepieces = sceneName.add.image(game.config.width / 2 - 360 / 2 - 80, game.config.height / 2 - 252 / 2 - 10, "framepiece").setOrigin(0);
+        this.framepicture = sceneName.add.image(game.config.width / 2 - 360 / 2 + 40, game.config.height / 2 - 252 / 2 - 10, "framepicture");
+        this.framepicture.setOrigin(0);
+        this.framepieces = sceneName.add.image(game.config.width / 2 - 360 / 2 - 80, game.config.height / 2 - 252 / 2 - 10, "framepiece").setOrigin(0);
     }
 
     loadPieces(sceneName, atlas, arr, x, shuffle, numZone) {
@@ -140,6 +146,7 @@ class main extends Phaser.Scene {
     setDragAndDrop(sceneName, picture, scaleNum) {
         this.piecesDrag(sceneName, picture, scaleNum);
         this.piecesDrop(sceneName, scaleNum);
+    
     }
 
     shuffle(array) {
@@ -184,9 +191,10 @@ class main extends Phaser.Scene {
                 gameObject.x = dropZone.x;
                 gameObject.y = dropZone.y;
                 gameObject.input.enabled = false;
+                
+                
                 if (this.arrPieces.indexOf(gameObject.name) >= 0) {
                     this.arrPieces.splice(this.arrPieces.indexOf(gameObject.name), 1);
-
                     this.piecesRender.splice(this.piecesRender.indexOf(gameObject), 1);
                     for (let i = 0; i < this.piecesRender.length; i++) {
                         this.piecesRender[i].destroy();
@@ -196,13 +204,19 @@ class main extends Phaser.Scene {
                         this.setDragAndDrop(sceneName, this.piecesRender[i], this.scaleNum);
                     }
                 }
+                this.piecesDropped++;
+                this.arrPiecesDropped.push(gameObject);
+                this.sound.play("done", {loop:false});
+                
             } else if (this.arrPieces.indexOf(gameObject.name) >= 0) {
                 gameObject.x = gameObject.input.dragStartX;
                 gameObject.y = gameObject.input.dragStartY;
                 gameObject.setScale(scaleNum);
             }
+            
 
         }, this);
+        
     }
 
     setZone(sceneName, num) {
@@ -213,9 +227,9 @@ class main extends Phaser.Scene {
             for (let j = 0; j < Math.sqrt(num); j++) {
                 zone = sceneName.add.zone(348 + i * ax + ax / 2, 143 + j * ay + ay / 2, ax, ay).setDropZone();
                 zone.setName(j * Math.sqrt(num) + i + 1);
-                let graphics = sceneName.add.graphics();
-                graphics.lineStyle(2, 0xFCDCEA);
-                graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
+                sceneName.graphics = sceneName.add.graphics();
+                sceneName.graphics.lineStyle(2, 0xFCDCEA);
+                sceneName.graphics.strokeRect(zone.x - zone.input.hitArea.width / 2, zone.y - zone.input.hitArea.height / 2, zone.input.hitArea.width, zone.input.hitArea.height);
 
             }
         }
@@ -233,17 +247,60 @@ class main extends Phaser.Scene {
 
     countdown(sceneName, initialTime){
         sceneName.text = sceneName.add.text(450, 420, 'Countdown: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);
-        sceneName.timedEvent = sceneName.time.addEvent({
+        this.timedEvent = sceneName.time.addEvent({
             delay: 1000,
             callback:  ()=> {
                 initialTime -= 1; // One second
                 sceneName.text.setText('Countdown: ' + this.formatTime(initialTime));
                 if (initialTime == 0){
-                    sceneName.timedEvent.remove();
+                    this.timedEvent.remove();
+
                 }
+                if (this.piecesDropped == this.numPieces){
+                    this.timedEvent.remove();
+                    setTimeout(() => sceneName.sound.play("winner",{loop: false}), 500)
+                    sceneName.tween = sceneName.tweens.add({
+                        targets: [this.framepicture, this.framepieces, this.changebtn],
+                        alpha: 0,
+                        delay: 1000,
+                        duration: 1000
+                    });
+                    sceneName.tweens.add({
+                        targets: sceneName.add.image(230, game.config.height/2 - 50, "welldone").setOrigin(0).setScale(0) ,
+                        scaleX: '+=1',
+                        scaleY: '+=1',
+                        duration: 1000,
+                        ease: 'Sine.easeInOut',
+                        delay: 1000,
+                        paused: false,
+                        repeat: 0
+                    })
+                    if (this.numPieces != 16){
+                        var nextbtn = sceneName.add.image(755 - 40, game.config.height - 113, "nextbtn");
+                        nextbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
+                        sceneName.sound.play("clicksound", {loop: false});
+                        setTimeout(() => this.scene.start('level2'), 100)
+                        }, sceneName)
+                        sceneName.tweens.add({
+                            targets: nextbtn.setScale(0) ,
+                            scaleX: '+=1',
+                            scaleY: '+=1',
+                            duration: 1000,
+                            ease: 'Sine.easeInOut',
+                            delay: 1000,
+                            paused: false,
+                            repeat: 0
+                        })
+                    }
+                } 
             },
             callbackScope: this,
             loop: true});
     }
 
+    debugTweenData (tweenData){
+}
+    update (){
+        this.debugTweenData(this.tween.data);
+    }
 }
