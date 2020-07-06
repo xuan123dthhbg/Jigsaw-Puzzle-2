@@ -10,6 +10,7 @@ class main extends Phaser.Scene {
         this.numPieces;
         this.piecesRender;
         this.piecesDropped;
+        this.frame;
         this.framepicture;
         this.framepieces;
         this.timedEvent;
@@ -17,42 +18,23 @@ class main extends Phaser.Scene {
         this.changebtn;
         this.objectGame;
     }
+    
 
-    loadButton(sceneName) {
+    loadButton(sceneName, sound) {
         this.arrPiecesDropped = [];
         this.piecesRender = [];
         this.objectGame=[];
         this.piecesDropped = 0;
+        this.objectGame.push(this.framepieces);
+        this.objectGame.push(this.framepicture);
         var backbtn = sceneName.add.image(755, 180, "backbtn");
         backbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             sceneName.sound.play("clicksound", {loop: false});
             sceneName.add.image(755, 180, "backbtn_right");
-            setTimeout(() => sceneName.scene.start("startGame"), 100)
+            setTimeout(() => sceneName.scene.start("startGame"), 100);
+            sound.stop();
         }, sceneName);
         this.objectGame.push(backbtn);
-
-        // var settingbtn = sceneName.add.image(755, 200, "settingbtn");
-        // settingbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
-        //     sceneName.sound.play("clicksound", {loop: false});
-        //     var playbtn = sceneName.add.image(755, 200, "settingbtn_right")
-        // }, sceneName)
-
-        // var isplaying = true;
-        // var pausebtn = sceneName.add.image(755, 260, "pausebtn")
-        // pausebtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
-        //     if (isplaying == true) {
-        //         sceneName.sound.play("clicksound", {loop: false});
-        //         setTimeout(() => sceneName.playbtn = sceneName.add.image(755, 260, "playbtn"), 100);
-        //         isplaying = false;
-        //         sceneName.sound.pauseAll();
-        //     } else {
-        //         sceneName.playbtn.destroy();
-        //         sceneName.playbtn = null;
-        //         isplaying = true;
-        //         sceneName.sound.resumeAll();
-        //     }
-        // }, this);
-
         var helpbtn = sceneName.add.image(755, 270, "helpbtn");
         this.objectGame.push(helpbtn);
         var haveImg = false;
@@ -76,14 +58,17 @@ class main extends Phaser.Scene {
         musiconbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             if (haveMusic == true) {
                 sceneName.sound.play("clicksound", {loop: false});
-                setTimeout(() => sceneName.musicoffbtn = sceneName.add.image(755, 360, "musicoff"), 100);
+                sceneName.musicoffbtn = sceneName.add.image(755, 360, "musicoff")
+                setTimeout(() => sceneName.musicoffbtn, 100);
                 haveMusic = false;
-                sceneName.sound.pauseAll();
+                sound.pause();
+                this.objectGame.push(sceneName.musicoffbtn);
             } else {
+                sceneName.sound.play("clicksound", {loop: false});
                 sceneName.musicoffbtn.destroy();
                 sceneName.musicoffbtn = null;
                 haveMusic = true;
-                sceneName.sound.resumeAll();
+                sound.resume();
             }
         }, this);
 
@@ -99,10 +84,14 @@ class main extends Phaser.Scene {
         }, this);
         this.objectGame.push(this.changebtn);
     }
+    loadMusic(sound){
+        var soundtrack = this.sound.add(sound, {loop: true})
+        return soundtrack;
+    }
 
     loadBackground(sceneName) {
-        var frame = sceneName.add.image(0, 0, "frame");
-        frame.setOrigin(0);
+        this.frame = sceneName.add.image(0, 0, "frame");
+        this.frame.setOrigin(0);
     }
 
     destroyPieces(arr) {
@@ -251,12 +240,16 @@ class main extends Phaser.Scene {
         return `${minutes}:${partInSeconds}`;
     }
 
-    countdown(sceneName, initialTime){
+    countdown(sceneName, initialTime, sound){
         sceneName.text = sceneName.add.text(450, 420, 'Time left: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);
+        
         this.timedEvent = sceneName.time.addEvent({
             delay: 1000,
             callback:  ()=> {
                 initialTime -= 1; // One second
+                if (initialTime < 6){
+                    sceneName.sound.play("countdown", {loop:false});
+                }
                 sceneName.text.setText('Time left: ' + this.formatTime(initialTime));
                 if (initialTime == 0){
                     this.timedEvent.remove();
@@ -264,6 +257,7 @@ class main extends Phaser.Scene {
                     this.destroyPieces(this.objectGame);
                     sceneName.sound.play("fail", {loop:false})
                     
+                    this.tweenfaded(sceneName, this.objectGame, 0);
                     var timesup = sceneName.add.image(game.config.width/2, game.config.height, "timesup");
 
                     sceneName.tweens.add({
@@ -274,10 +268,12 @@ class main extends Phaser.Scene {
                                 delay: 0
                     })
 
+
                     var replaybtn = sceneName.add.image(game.config.width/2 + 30, game.config.height - 130, "replaybtn").setScale(1.2, 0.9)
                     replaybtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
                         sceneName.sound.play("clicksound", {loop: false});
-                        sceneName.scene.start(sceneName);   
+                        sceneName.scene.start(sceneName);
+                        sound.stop();   
                     },this); 
                     this.tweeneaseInOut(sceneName, replaybtn, 0)
                 }
@@ -285,22 +281,23 @@ class main extends Phaser.Scene {
                 if (this.piecesDropped == this.numPieces){
                     this.timedEvent.remove();
                     setTimeout(() => sceneName.sound.play("winner",{loop: false}), 500)
-                    sceneName.tween = sceneName.tweens.add({
-                        targets: [this.framepicture, this.framepieces, this.changebtn],
-                        alpha: 0,
-                        delay: 1000,
-                        duration: 1000
-                    });
+                    this.tweenfaded(sceneName, this.objectGame, 0);
+                    this.tweenfaded(sceneName, [this.frame], 0.5)
+                    
                     if (this.numPieces != 16){
-                        var welldone = sceneName.add.image(230, game.config.height/2 - 50, "welldone").setOrigin(0);
+                        var welldone = sceneName.add.image(0, game.config.height/6, "welldone").setOrigin(0);
                         this.tweeneaseInOut(sceneName, welldone, 0);
-                        var nextbtn = sceneName.add.image(755 - 40, game.config.height - 113, "nextbtn");
+                        var nextbtn = sceneName.add.image(game.config.width*5/6, game.config.height/2, "nextbutton_large").setScale(0.5);
                         nextbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
                         sceneName.sound.play("clicksound", {loop: false});
+                        sound.stop();
                         if (this.numPieces == 4){
-                            setTimeout(() => sceneName.scene.start('level2'), 100)
+                            setTimeout(() => sceneName.scene.start('level2'), 100);
+                            
+
                         } else if (this.numPieces == 9){
-                            setTimeout(() => sceneName.scene.start('level3'), 100)
+                            setTimeout(() => sceneName.scene.start('level3'), 100);
+                            
                         }
                         }, this)
                         this.tweeneaseInOut(sceneName, nextbtn, 0);
@@ -312,12 +309,22 @@ class main extends Phaser.Scene {
                         homebtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
                             sceneName.sound.play("clicksound", {loop: false});
                             sceneName.scene.start('startGame');   
+                            sound.stop()
                         },this); 
                     }
                 } 
             },
             callbackScope: this,
             loop: true});
+            this.objectGame.push(sceneName.text);
+    }
+    tweenfaded(sceneName, array, a){
+        sceneName.tween = sceneName.tweens.add({
+            targets: array,
+            alpha: a,
+            delay: 1000,
+            duration: 1000
+        });
     }
     tweeneaseInOut(sceneName, image, x){
         sceneName.tweens.add({

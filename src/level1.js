@@ -3,14 +3,16 @@ class level1 extends Phaser.Scene {
         super("level1");
     }
     init() {
-        this.text;
         this.initialTime;
     }
     create() {
+        
         var main = this.scene.get("main");
+        var soundtrack = main.loadMusic('soundtrack');
+        soundtrack.play();
         main.loadBackground(this);
         main.loadFrame(this);
-        main.loadButton(this, "atlas4", [1, 2, 3, 4], 0.5, 1, 4);
+        main.loadButton(this, soundtrack);
         
         var pieces = main.loadPieces(this, "atlas4", [1, 2, 3, 4], 0.5, 1, 4);
         main.setZone(this, 4);
@@ -18,7 +20,7 @@ class level1 extends Phaser.Scene {
             main.setDragAndDrop(this, pieces[i], 0.5);
             
         }
-        main.countdown(this, 3);
+        main.countdown(this, 10, soundtrack);
         
     }
 

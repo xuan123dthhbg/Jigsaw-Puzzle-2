@@ -11,6 +11,6 @@ class boodtGame extends Phaser.Scene {
     }
     create (){
         this.scene.start("startGame");
-        this.sound.play("soundtrack",{loop: true}) 
+        
     }
 }

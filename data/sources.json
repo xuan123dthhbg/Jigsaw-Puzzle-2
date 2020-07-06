@@ -133,6 +133,11 @@
             },
             {
                 "type": "image",
+                "key": "nextbutton_large",
+                "url": "assets/img/nextbutton_large.png"
+            },
+            {
+                "type": "image",
                 "key": "jigsaw",
                 "url": "assets/img/jigsaw.png"
             },
@@ -160,6 +165,16 @@
                 "type": "audio",
                 "key": "fail",
                 "url": "assets/audio/failsound.wav"
+            },
+            {
+                "type": "audio",
+                "key": "countdown",
+                "url": "assets/audio/countdown.wav"
+            },
+            {
+                "type": "audio",
+                "key": "startgame",
+                "url": "assets/audio/startgame.mp3"
             }
         ]
     }
