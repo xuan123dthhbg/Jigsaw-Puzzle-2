@@ -10,10 +10,9 @@ class startGame extends Phaser.Scene {
         var back1 = this.add.image(0, 0,"background");
         back1.setOrigin(0);
         var playbutton = this.add.image(200,650, "playbutton")
-         
         playbutton.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
             this.sound.play("clicksound", {loop: false});
-            this.scene.start("menu");   
+            this.scene.start("level1");   
         },this);   
         
         this.tweens.add({

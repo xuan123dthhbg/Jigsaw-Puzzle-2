@@ -18,7 +18,7 @@ class level1 extends Phaser.Scene {
             main.setDragAndDrop(this, pieces[i], 0.5);
             
         }
-        main.countdown(this, 30);
+        main.countdown(this, 10);
         
     }
 

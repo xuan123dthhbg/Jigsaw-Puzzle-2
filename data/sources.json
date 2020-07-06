@@ -112,6 +112,16 @@
                 "url": "assets/img/welldone.png"
             },
             {
+                "type": "image",
+                "key": "winner",
+                "url": "assets/img/winner.png"
+            },
+            {
+                "type": "image",
+                "key": "homebtn",
+                "url": "assets/img/homebtn.png"
+            },
+            {
                 "type": "audio",
                 "key": "soundtrack",
                 "url": "assets/audio/soundtrack.wav"
@@ -130,6 +140,11 @@
                 "type": "audio",
                 "key": "done",
                 "url": "assets/audio/done.wav"
+            },
+            {
+                "type": "audio",
+                "key": "fail",
+                "url": "assets/audio/failsound.wav"
             }
         ]
     }

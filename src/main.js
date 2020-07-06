@@ -25,7 +25,7 @@ class main extends Phaser.Scene {
         backbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             sceneName.sound.play("clicksound", {loop: false});
             sceneName.add.image(755, 180, "backbtn_right");
-            setTimeout(() => sceneName.scene.start("menu"), 100)
+            setTimeout(() => sceneName.scene.start("startGame"), 100)
         }, sceneName);
 
         // var settingbtn = sceneName.add.image(755, 200, "settingbtn");
@@ -246,16 +246,32 @@ class main extends Phaser.Scene {
     }
 
     countdown(sceneName, initialTime){
-        sceneName.text = sceneName.add.text(450, 420, 'Countdown: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);
+        sceneName.text = sceneName.add.text(450, 420, 'Time left: ' + this.formatTime(initialTime)).setStroke('#EFAB0C', 8);
         this.timedEvent = sceneName.time.addEvent({
             delay: 1000,
             callback:  ()=> {
                 initialTime -= 1; // One second
-                sceneName.text.setText('Countdown: ' + this.formatTime(initialTime));
+                sceneName.text.setText('Time left: ' + this.formatTime(initialTime));
                 if (initialTime == 0){
                     this.timedEvent.remove();
-
+                    sceneName.sound.play("fail", {loop:false})
+                    var playbutton = sceneName.add.image(200,650, "playbutton")
+                    playbutton.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
+                        sceneName.sound.play("clicksound", {loop: false});
+                        sceneName.scene.sleep()
+                        sceneName.scene.start(sceneName);   
+                    },this);   
+                    
+                    sceneName.tweens.add({
+                        targets: playbutton,
+                                props: {
+                                    y: {value: 130, duration: 1500, ease: 'Bounce.easeOut'}
+                                },
+                                delay: 500
+                    })
+                    
                 }
+                
                 if (this.piecesDropped == this.numPieces){
                     this.timedEvent.remove();
                     setTimeout(() => sceneName.sound.play("winner",{loop: false}), 500)
@@ -265,17 +281,9 @@ class main extends Phaser.Scene {
                         delay: 1000,
                         duration: 1000
                     });
-                    sceneName.tweens.add({
-                        targets: sceneName.add.image(230, game.config.height/2 - 50, "welldone").setOrigin(0).setScale(0) ,
-                        scaleX: '+=1',
-                        scaleY: '+=1',
-                        duration: 1000,
-                        ease: 'Sine.easeInOut',
-                        delay: 1000,
-                        paused: false,
-                        repeat: 0
-                    })
                     if (this.numPieces != 16){
+                        var welldone = sceneName.add.image(230, game.config.height/2 - 50, "welldone").setOrigin(0);
+                        this.tweenImage(sceneName, welldone, 0);
                         var nextbtn = sceneName.add.image(755 - 40, game.config.height - 113, "nextbtn");
                         nextbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
                         sceneName.sound.play("clicksound", {loop: false});
@@ -285,23 +293,34 @@ class main extends Phaser.Scene {
                             setTimeout(() => sceneName.scene.start('level3'), 100)
                         }
                         }, this)
-                        sceneName.tweens.add({
-                            targets: nextbtn.setScale(0) ,
-                            scaleX: '+=1',
-                            scaleY: '+=1',
-                            duration: 1000,
-                            ease: 'Sine.easeInOut',
-                            delay: 1000,
-                            paused: false,
-                            repeat: 0
-                        })
+                        this.tweenImage(sceneName, nextbtn, 0);
+                    } else {
+                        var winner = sceneName.add.image(game.config.width/2 - 200, game.config.height/2 - 50, "winner");
+                        var homebtn = sceneName.add.image(game.config.width/2 - 220, game.config.height/2 + 100, "homebtn");
+                        this.tweenImage(sceneName, winner, 0);
+                        this.tweenImage(sceneName, homebtn, 0);
+                        homebtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
+                            sceneName.sound.play("clicksound", {loop: false});
+                            sceneName.scene.start('startGame');   
+                        },this); 
                     }
                 } 
             },
             callbackScope: this,
             loop: true});
     }
-
+    tweenImage(sceneName, image, x){
+        sceneName.tweens.add({
+            targets: image.setScale(x),
+            scaleX: '+=1',
+            scaleY: '+=1',
+            duration: 1000,
+            ease: 'Sine.easeInOut',
+            delay: 1000,
+            paused: false,
+            repeat: 0
+        })
+    }
     debugTweenData (tweenData){
 }
     update (){
