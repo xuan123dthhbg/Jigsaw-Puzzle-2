@@ -122,6 +122,21 @@
                 "url": "assets/img/homebtn.png"
             },
             {
+                "type": "image",
+                "key": "timesup",
+                "url": "assets/img/timesup.png"
+            },
+            {
+                "type": "image",
+                "key": "replaybtn",
+                "url": "assets/img/replaybtn.png"
+            },
+            {
+                "type": "image",
+                "key": "jigsaw",
+                "url": "assets/img/jigsaw.png"
+            },
+            {
                 "type": "audio",
                 "key": "soundtrack",
                 "url": "assets/audio/soundtrack.wav"

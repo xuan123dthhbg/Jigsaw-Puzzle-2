@@ -13,8 +13,7 @@ class startGame extends Phaser.Scene {
         playbutton.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
             this.sound.play("clicksound", {loop: false});
             this.scene.start("level1");   
-        },this);   
-        
+        },this);
         this.tweens.add({
             targets: playbutton,
                     props: {

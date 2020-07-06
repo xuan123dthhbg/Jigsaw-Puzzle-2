@@ -29,6 +29,7 @@ class main extends Phaser.Scene {
             sceneName.add.image(755, 180, "backbtn_right");
             setTimeout(() => sceneName.scene.start("startGame"), 100)
         }, sceneName);
+        this.objectGame.push(backbtn);
 
         // var settingbtn = sceneName.add.image(755, 200, "settingbtn");
         // settingbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
@@ -262,21 +263,23 @@ class main extends Phaser.Scene {
                     this.destroyPieces(this.piecesRender);
                     this.destroyPieces(this.objectGame);
                     sceneName.sound.play("fail", {loop:false})
-                    var playbutton = sceneName.add.image(game.config.width/2,650, "playbutton")
-                    playbutton.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
-                        sceneName.sound.play("clicksound", {loop: false});
-                        sceneName.scene.sleep()
-                        sceneName.scene.start(sceneName);   
-                    },this);   
                     
+                    var timesup = sceneName.add.image(game.config.width/2, game.config.height, "timesup");
+
                     sceneName.tweens.add({
-                        targets: playbutton,
+                        targets: timesup.setScale(0.9),
                                 props: {
-                                    y: {value: 130, duration: 1500, ease: 'Bounce.easeOut'}
+                                    y: {value: 200, duration: 1500, ease: 'Bounce.easeOut'}
                                 },
-                                delay: 500
+                                delay: 0
                     })
-                    
+
+                    var replaybtn = sceneName.add.image(game.config.width/2 + 30, game.config.height - 130, "replaybtn").setScale(1.2, 0.9)
+                    replaybtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
+                        sceneName.sound.play("clicksound", {loop: false});
+                        sceneName.scene.start(sceneName);   
+                    },this); 
+                    this.tweeneaseInOut(sceneName, replaybtn, 0)
                 }
                 
                 if (this.piecesDropped == this.numPieces){
@@ -290,7 +293,7 @@ class main extends Phaser.Scene {
                     });
                     if (this.numPieces != 16){
                         var welldone = sceneName.add.image(230, game.config.height/2 - 50, "welldone").setOrigin(0);
-                        this.tweenImage(sceneName, welldone, 0);
+                        this.tweeneaseInOut(sceneName, welldone, 0);
                         var nextbtn = sceneName.add.image(755 - 40, game.config.height - 113, "nextbtn");
                         nextbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
                         sceneName.sound.play("clicksound", {loop: false});
@@ -300,12 +303,12 @@ class main extends Phaser.Scene {
                             setTimeout(() => sceneName.scene.start('level3'), 100)
                         }
                         }, this)
-                        this.tweenImage(sceneName, nextbtn, 0);
+                        this.tweeneaseInOut(sceneName, nextbtn, 0);
                     } else {
                         var winner = sceneName.add.image(game.config.width/2 - 200, game.config.height/2 - 50, "winner");
                         var homebtn = sceneName.add.image(game.config.width/2 - 220, game.config.height/2 + 100, "homebtn");
-                        this.tweenImage(sceneName, winner, 0);
-                        this.tweenImage(sceneName, homebtn, 0);
+                        this.tweeneaseInOut(sceneName, winner, 0);
+                        this.tweeneaseInOut(sceneName, homebtn, 0);
                         homebtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
                             sceneName.sound.play("clicksound", {loop: false});
                             sceneName.scene.start('startGame');   
@@ -316,7 +319,7 @@ class main extends Phaser.Scene {
             callbackScope: this,
             loop: true});
     }
-    tweenImage(sceneName, image, x){
+    tweeneaseInOut(sceneName, image, x){
         sceneName.tweens.add({
             targets: image.setScale(x),
             scaleX: '+=1',
