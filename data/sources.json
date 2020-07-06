@@ -1,11 +1,7 @@
 { 
     "img": {
         "files": [
-            {
-                "type": "image",
-                "key": "background",
-                "url": "assets/img/background1.png"
-            },
+            
             {
                 "type": "image",
                 "key": "playbutton",
@@ -138,8 +134,18 @@
             },
             {
                 "type": "image",
+                "key": "background",
+                "url": "assets/img/background.png"
+            },
+            {
+                "type": "image",
                 "key": "jigsaw",
                 "url": "assets/img/jigsaw.png"
+            },
+            {
+                "type": "image",
+                "key": "head",
+                "url": "assets/img/head.png"
             },
             {
                 "type": "audio",

@@ -9,9 +9,10 @@ class startGame extends Phaser.Scene {
     create() {  
         var startgame = this.sound.add("startgame", {loop:true});
         startgame.play();
-        var back1 = this.add.image(0, 0,"background");
-        back1.setOrigin(0);
-        var playbutton = this.add.image(200,650, "playbutton")
+        this.add.image(0, 0,"background").setOrigin(0);
+        var head = this.add.image(game.config.width/2, 0,"head");
+        this.add.image(game.config.width *4/5, game.config.height/2.5, "jigsaw").setScale(2);
+        var playbutton = this.add.image(game.config.width,game.config.height*3/4, "playbutton");
         playbutton.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
             this.sound.play("clicksound", {loop: false});
             this.scene.start("level1");
@@ -20,9 +21,16 @@ class startGame extends Phaser.Scene {
         this.tweens.add({
             targets: playbutton,
                     props: {
-                        y: {value: 130, duration: 1500, ease: 'Bounce.easeOut'}
+                        x: {value: game.config.width/5 *4, duration: 1500, ease: 'Bounce.easeOut'}
                     },
-                    delay: 500
+                    delay: 0
+        })
+        this.tweens.add({
+            targets: head,
+                    props: {
+                        y: {value: game.config.height/1.7, duration: 1500, ease: 'Bounce.easeOut'}
+                    },
+                    delay: 0
         })
     }
 }

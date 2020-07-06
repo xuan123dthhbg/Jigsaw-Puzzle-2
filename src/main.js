@@ -247,7 +247,7 @@ class main extends Phaser.Scene {
             delay: 1000,
             callback:  ()=> {
                 initialTime -= 1; // One second
-                if (initialTime < 6){
+                if (initialTime < 11){
                     sceneName.sound.play("countdown", {loop:false});
                 }
                 sceneName.text.setText('Time left: ' + this.formatTime(initialTime));
@@ -259,7 +259,7 @@ class main extends Phaser.Scene {
                     
                     this.tweenfaded(sceneName, this.objectGame, 0);
                     var timesup = sceneName.add.image(game.config.width/2, game.config.height, "timesup");
-
+                    sound.stop();
                     sceneName.tweens.add({
                         targets: timesup.setScale(0.9),
                                 props: {
@@ -273,24 +273,26 @@ class main extends Phaser.Scene {
                     replaybtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
                         sceneName.sound.play("clicksound", {loop: false});
                         sceneName.scene.start(sceneName);
-                        sound.stop();   
+                           
                     },this); 
                     this.tweeneaseInOut(sceneName, replaybtn, 0)
                 }
                 
                 if (this.piecesDropped == this.numPieces){
                     this.timedEvent.remove();
+                    sound.stop();
                     setTimeout(() => sceneName.sound.play("winner",{loop: false}), 500)
                     this.tweenfaded(sceneName, this.objectGame, 0);
                     this.tweenfaded(sceneName, [this.frame], 0.5)
                     
                     if (this.numPieces != 16){
                         var welldone = sceneName.add.image(0, game.config.height/6, "welldone").setOrigin(0);
+                        
                         this.tweeneaseInOut(sceneName, welldone, 0);
                         var nextbtn = sceneName.add.image(game.config.width*5/6, game.config.height/2, "nextbutton_large").setScale(0.5);
                         nextbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
                         sceneName.sound.play("clicksound", {loop: false});
-                        sound.stop();
+                        
                         if (this.numPieces == 4){
                             setTimeout(() => sceneName.scene.start('level2'), 100);
                             
@@ -309,7 +311,7 @@ class main extends Phaser.Scene {
                         homebtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
                             sceneName.sound.play("clicksound", {loop: false});
                             sceneName.scene.start('startGame');   
-                            sound.stop()
+                            
                         },this); 
                     }
                 } 

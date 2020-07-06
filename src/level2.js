@@ -18,6 +18,6 @@ class level2 extends Phaser.Scene {
         for (let i = 0; i < 4; i++) {
             main.setDragAndDrop(this,pieces[i] ,0.75);
         }
-        main.countdown(this, 60, soundtrack);
+        main.countdown(this, 45, soundtrack);
     }
 }
