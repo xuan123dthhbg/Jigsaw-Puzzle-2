@@ -15,11 +15,13 @@ class main extends Phaser.Scene {
         this.timedEvent;
         this.arrPiecesDropped;
         this.changebtn;
+        this.objectGame;
     }
 
     loadButton(sceneName) {
         this.arrPiecesDropped = [];
         this.piecesRender = [];
+        this.objectGame=[];
         this.piecesDropped = 0;
         var backbtn = sceneName.add.image(755, 180, "backbtn");
         backbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
@@ -51,6 +53,7 @@ class main extends Phaser.Scene {
         // }, this);
 
         var helpbtn = sceneName.add.image(755, 270, "helpbtn");
+        this.objectGame.push(helpbtn);
         var haveImg = false;
         helpbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             if (haveImg == false) {
@@ -67,6 +70,7 @@ class main extends Phaser.Scene {
         }, sceneName);
 
         var musiconbtn = sceneName.add.image(755, 360, "musicon");
+        this.objectGame.push(musiconbtn);
         var haveMusic = true;
         musiconbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             if (haveMusic == true) {
@@ -91,7 +95,8 @@ class main extends Phaser.Scene {
             for (let i = 0; i < this.piecesRender.length; i++) {
                 this.setDragAndDrop(sceneName, this.piecesRender[i], this.scaleNum);
             }
-        }, this)
+        }, this);
+        this.objectGame.push(this.changebtn);
     }
 
     loadBackground(sceneName) {
@@ -254,8 +259,10 @@ class main extends Phaser.Scene {
                 sceneName.text.setText('Time left: ' + this.formatTime(initialTime));
                 if (initialTime == 0){
                     this.timedEvent.remove();
+                    this.destroyPieces(this.piecesRender);
+                    this.destroyPieces(this.objectGame);
                     sceneName.sound.play("fail", {loop:false})
-                    var playbutton = sceneName.add.image(200,650, "playbutton")
+                    var playbutton = sceneName.add.image(game.config.width/2,650, "playbutton")
                     playbutton.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
                         sceneName.sound.play("clicksound", {loop: false});
                         sceneName.scene.sleep()
