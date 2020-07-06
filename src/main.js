@@ -35,20 +35,22 @@ class main extends Phaser.Scene {
             sound.stop();
         }, sceneName);
         this.objectGame.push(backbtn);
+
         var helpbtn = sceneName.add.image(755, 270, "helpbtn");
         this.objectGame.push(helpbtn);
         var haveImg = false;
         helpbtn.setInteractive({useHandCursor: true}).on('pointerdown', function () {
             if (haveImg == false) {
                 sceneName.sound.play("clicksound", {loop: false});
-                setTimeout(() => sceneName.orginpicture = sceneName.add.image(game.config.width / 2 - 200, game.config.height / 2 - 117.5, "originpicture").setOrigin(0), 100);
+                setTimeout(() => sceneName.orginpicture = sceneName.add.image(game.config.width/2, game.config.height/2, "originpicture"), 100);
                 haveImg = true;
-
+                //this.tweenfaded(sceneName, this.objectGame, 0)
             } else {
                 sceneName.sound.play("clicksound", {loop: false});
                 sceneName.orginpicture.destroy();
                 sceneName.originpicture = null;
                 haveImg = false;
+                //this.tweenfaded(sceneName, this.objectGame, 0)
             }
         }, sceneName);
 
@@ -258,18 +260,18 @@ class main extends Phaser.Scene {
                     sceneName.sound.play("fail", {loop:false})
                     
                     this.tweenfaded(sceneName, this.objectGame, 0);
-                    var timesup = sceneName.add.image(game.config.width/2, game.config.height, "timesup");
+                    this.tweenfaded(sceneName, [this.frame], 0.3);
+                    var timesup = sceneName.add.image(game.config.width/2, 0, "timesup");
                     sound.stop();
                     sceneName.tweens.add({
                         targets: timesup.setScale(0.9),
                                 props: {
-                                    y: {value: 200, duration: 1500, ease: 'Bounce.easeOut'}
+                                    y: {value: game.config.height/3, duration: 1500, ease: 'Bounce.easeOut'}
                                 },
                                 delay: 0
                     })
 
-
-                    var replaybtn = sceneName.add.image(game.config.width/2 + 30, game.config.height - 130, "replaybtn").setScale(1.2, 0.9)
+                    var replaybtn = sceneName.add.image(game.config.width/2, game.config.height *3/4, "replaybtn").setScale(1.2, 0.9)
                     replaybtn.setInteractive( { useHandCursor: true  }).on('pointerdown', function(){
                         sceneName.sound.play("clicksound", {loop: false});
                         sceneName.scene.start(sceneName);
