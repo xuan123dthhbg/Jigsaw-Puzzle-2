@@ -54,14 +54,7 @@ class main extends Phaser.Scene {
                     this.tweenfaded(sceneName, this.objectGame, 1, 300);
                     this.tweenfaded(sceneName, this.piecesRender, 1, 300);
                 }, this)
-            
-            // else {
-            //     sceneName.sound.play("clicksound", {loop: false});
-            //     sceneName.orginpicture.destroy();
-            //     sceneName.originpicture = null;
-            //     haveImg = false;
-            // }
-        }, this);
+            }, this);
 
         var musiconbtn = sceneName.add.image(755, 360, "musicon");
         this.objectGame.push(musiconbtn);
